@@ -1,0 +1,6 @@
+tornado==3.0
+nose
+coverage
+pymongodb
+motor
+
