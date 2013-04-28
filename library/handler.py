@@ -2,7 +2,7 @@ __author__ = 'honhon'
 import tornado.web
 import json
 from bson import json_util
-#from bson.objectid import ObjectId
+
 from tornado import gen
 
 class MotorHandler(tornado.web.RequestHandler):
