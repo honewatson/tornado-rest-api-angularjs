@@ -7,10 +7,12 @@ from tornado import gen
 
 class MotorHandler(tornado.web.RequestHandler):
 
-    def initialize(self, model, prefix):
+    def initialize(self, model, prefix, mtype):
         self.model = model
         self.prefix = prefix
+        self.mtype = mtype
         self.response_dict = ""
+        
 
     def sendJson(self, data):
         data = json.dumps(data, sort_keys=True, indent=4, default=json_util.default)
@@ -96,23 +98,23 @@ def rest_routes(objects, handlers, model):
     routes = []
     for name, cls in objects.iteritems():
         
-        route = (r'/%s/list/?' % name.lower(),  handlers['List'], dict(model=model, prefix=name))
+        route = (r'/%s/list/?' % name.lower(),  handlers['List'], dict(model=model, prefix=name, mtype="list"))
         print route
         routes.append( route )
         
-        route = (r'/%s/new/?' % name.lower(), handlers['Post'], dict(model=model, prefix=name) )
+        route = (r'/%s/new/?' % name.lower(), handlers['Post'], dict(model=model, prefix=name, mtype="new") )
         print route
         routes.append( route )
         
-        route = (r'/%s/findone/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['FindOne'], dict(model=model, prefix=name))
+        route = (r'/%s/findone/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['FindOne'], dict(model=model, prefix=name, mtype="findone"))
         print route
         routes.append( route )
         
-        route = (r'/%s/update/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['Put'], dict(model=model, prefix=name))
+        route = (r'/%s/update/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['Put'], dict(model=model, prefix=name, mtype="update"))
         print route
         routes.append( route )
         
-        route = (r'/%s/delete/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['Delete'], dict(model=model, prefix=name))
+        route = (r'/%s/delete/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['Delete'], dict(model=model, prefix=name, mtype="delete"))
         print route
         routes.append( route )
         
