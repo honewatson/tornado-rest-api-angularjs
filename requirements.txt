@@ -1,6 +1,6 @@
 tornado==3.0
 nose
 coverage
-pymongodb
+#pymongodb
 motor
-
+git+git://github.com/j2labs/schematics.git

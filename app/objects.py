@@ -3,7 +3,7 @@ import motor
 from schematics.models import Model
 from schematics.serialize import (to_python, to_json, make_safe_python,
                                   make_safe_json, blacklist, whitelist)
-from schematics.types import (StringType, IntType, UUIDType)
+from schematics.types import (StringType, IntType, UUIDType, DateTimeType)
 from schematics.types.mongo import ObjectIdType
 
 class MongoModel(Model):
@@ -11,12 +11,15 @@ class MongoModel(Model):
 
 class Animal(MongoModel):
     name = StringType(max_length=40)
+    created = DateTimeType()
 
 class Machinary(MongoModel):
     name = StringType(max_length=40)
+    created = DateTimeType()
 
 class Crops(MongoModel):
     name = StringType(max_length=40)
+    created = DateTimeType()
 
 objects = {"Animal": Animal, "Machinary": Machinary, "Crops": Crops}
 

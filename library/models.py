@@ -11,6 +11,7 @@ from schematics.validation import ValidationError
 from schematics.types.mongo import ObjectIdType
 from bson.objectid import ObjectId
 import json
+import datetime
 
 class ModelParams(object):
 
@@ -92,8 +93,14 @@ class PostModel(Model):
     @gen.coroutine
     def setResponseDict(self):
         params = self.params.getParams()
+        if '_id' in params.keys():
+            result = yield motor.Op( self.collection.find_one, self.getIdDict(params['_id']) )
+            if result:
+                params['created'] = result['created']
         obj = self.schematic(**params)
         try:
+            if not obj._id and 'created' in obj._fields:
+                    obj.created = datetime.datetime.utcnow()
             obj.validate()
             result = yield motor.Op(self.collection.save, to_python(obj))
             self.setResponseDictSuccess({"_id": str(result)})
