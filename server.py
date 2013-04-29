@@ -16,12 +16,12 @@ db = client[config['db']]
 
 
 from app.objects import objects
-from library.models import models, ModelParams
-from library.handler import handlers
-from library.handler import rest_routes
+from apiframework.models import models, ModelParams
+from apiframework.handler import handlers
+from apiframework.handler import rest_routes
 
 
-from library.factories import ModelFactory
+from apiframework.factories import ModelFactory
 
 model = ModelFactory(db, objects, models, ModelParams)
 
