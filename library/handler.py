@@ -29,6 +29,7 @@ def generate_response(request):
 
     return _request
 
+"""
 class MainHandler(MotorHandler):
 
     @generate_response
@@ -47,13 +48,72 @@ class MainHandler(MotorHandler):
     def delete(self, *args, **kwargs):
         self.sendJson(self.response_dict)
 
-def rest_routes(objects, handler, model):
+"""
+
+class ListHandler(MotorHandler):
+    
+    SUPPORTED_METHODS = ("GET")
+    
+    @generate_response
+    def get(self, *args, **kwargs):
+        self.sendJson(self.response_dict)
+
+class PostHandler(MotorHandler):
+    
+    SUPPORTED_METHODS = ("POST")
+
+    @generate_response
+    def post(self, *args, **kwargs):
+        self.sendJson(self.response_dict)
+
+class FindOneHandler(MotorHandler):
+    
+    SUPPORTED_METHODS = ("GET")
+
+    @generate_response
+    def get(self, *args, **kwargs):
+        self.sendJson(self.response_dict)
+
+class UpdateHandler(MotorHandler):
+    
+    SUPPORTED_METHODS = ("PUT")
+
+    @generate_response
+    def put(self, *args, **kwargs):
+        self.sendJson(self.response_dict)
+
+class DeleteHandler(MotorHandler):
+
+    SUPPORTED_METHODS = ("DELETE")
+    
+    @generate_response
+    def delete(self, *args, **kwargs):
+        self.sendJson(self.response_dict)
+
+handlers = {"List": ListHandler, "Post": PostHandler, "FindOne": FindOneHandler, "Put": UpdateHandler, "Delete": DeleteHandler}
+
+def rest_routes(objects, handlers, model):
     routes = []
     for name, cls in objects.iteritems():
-        route = (r'/%s/?' % name.lower(), handler, dict(model=model, prefix=name) )
+        
+        route = (r'/%s/list/?' % name.lower(),  handlers['List'], dict(model=model, prefix=name))
         print route
         routes.append( route )
-        route = (r'/%s/([0-9a-fA-F]{24,})/?' % name.lower(),  MainHandler, dict(model=model, prefix=name))
+        
+        route = (r'/%s/new/?' % name.lower(), handlers['Post'], dict(model=model, prefix=name) )
         print route
         routes.append( route )
+        
+        route = (r'/%s/findone/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['FindOne'], dict(model=model, prefix=name))
+        print route
+        routes.append( route )
+        
+        route = (r'/%s/update/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['Put'], dict(model=model, prefix=name))
+        print route
+        routes.append( route )
+        
+        route = (r'/%s/delete/([0-9a-fA-F]{24,})/?' % name.lower(),  handlers['Delete'], dict(model=model, prefix=name))
+        print route
+        routes.append( route )
+        
     return routes

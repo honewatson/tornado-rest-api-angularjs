@@ -17,7 +17,7 @@ db = client[config['db']]
 
 from app.objects import objects
 from library.models import models, ModelParams
-from library.handler import MainHandler
+from library.handler import handlers
 from library.handler import rest_routes
 
 
@@ -28,7 +28,7 @@ model = ModelFactory(db, objects, models, ModelParams)
 def main():
     tornado.options.parse_command_line()
     #application = tornado.web.Application(rest_routes(objects, MainHandler, model), debug=True)
-    application = tornado.web.Application(rest_routes(objects, MainHandler, model), debug=True)
+    application = tornado.web.Application(rest_routes(objects, handlers, model), debug=True)
     http_server = tornado.httpserver.HTTPServer(application)
     http_server.listen(options.port)
     tornado.ioloop.IOLoop.instance().start()
